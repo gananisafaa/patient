@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Patient</title>
+</head>
+
+<body>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card ">
+            <div class="card-header bg-secondary text-white" th:if="${patient.id==null}">
+                Add a patient
+            </div>
+            <div class="card-header bg-secondary text-white" th:if="${patient.id!=null}">
+                Edit a patient
+            </div>
+            <div class="card-body">
+
+                <form th:action="@{savePatient}" class="was-validated" method="post">
+                    <!-- ID -->
+                    <div class="form-group">
+                        <label >ID:</label>
+                        <label class="form-control" th:text="${patient.id}"></label>
+
+                         </div>
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="name"
+                               placeholder="Enter name"
+                               name="name"
+                               th:value="${patient.name}"
+                               required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <!-- birthDate -->
+                    <div class="form-group">
+                        <label class="control-Label"> Birth Date:</label>
+                        <input type="date"
+                               name="birthDate"
+                               class="form-control"
+                               th:value="${patient.birthDate}"
+                               required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+
+                    <!-- Sick -->
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="sick"
+                                   th:checked="${patient.sick}"
+                            >
+                            Sick
+                        </label>
+                    </div>
+                    <!-- Score -->
+                    <div class="form-group">
+                        <label for="score">Score:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="score"
+                               placeholder="Enter score"
+                               name="score"
+                               th:value="${patient.score}"
+                               required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" th:if="${patient.id==null}">Save</button>
+                    <button type="submit" class="btn btn-warning" th:if="${patient.id!=null}">Edit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

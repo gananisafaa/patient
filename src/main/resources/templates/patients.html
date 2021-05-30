@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="template1">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Patients Page</title>
+</head>
+
+<body>
+<div layout:fragment="formContent">
+    <form method="get" class="form-inline" th:action="@{patients}">
+        <input class="form-control mr-sm-2" type="text" name="keyword" th:value="${keyword}" placeholder="Search">
+        <button class="btn btn-success"> Search</button>
+    </form>
+
+</div>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card">
+
+            <div class="card-header bg-secondary">
+                Patients List
+            </div>
+            <div class="card-body">
+
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">BirthDate</th>
+                        <th scope="col">Sick</th>
+                        <th scope="col">Score</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p:${patients}">
+                        <th scope="row" th:text="${p.id}"></th>
+                        <td th:text="${p.name}"></td>
+                        <td th:text="${p.birthDate}"></td>
+                        <td th:text="${p.sick}"></td>
+                        <td th:text="${p.score}"></td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a class="btn btn-danger"
+                               th:href="@{deletePatient(id=${p.id}, keyword=${keyword},page=${currentPage},size=${size})}"
+                               onclick="return confirm('Are you sure you want to delete?')">
+                                Delete
+                            </a>
+                        </td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a class="btn btn-warning"
+                               th:href="@{editPatient(id=${p.id}, keyword=${keyword},page=${currentPage},size=${size})}"
+                               >
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <ul class="nav nav_pills">
+
+                    <li th:each="page,status:${pages}">
+                        <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}"
+                           th:text="${status.index}"
+                           th:href="@{patients(page=${status.index},keyword=${keyword})}">
+
+                        </a>
+                    </li>
+
+
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
